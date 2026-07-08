@@ -1,6 +1,10 @@
 # Prompt système pour Claude
 
-Copie-colle ce prompt dans l'application Claude (claude.ai) avec ta photo de repas. Tu peux aussi le copier directement depuis l'app avec le bouton **« Copier le prompt pour Claude »**.
+Ce prompt accompagne la photo de repas envoyée à Claude (claude.ai). L'app l'utilise automatiquement de trois façons :
+
+- **« Prendre la photo → partager à Claude »** : le prompt est joint au partage Android et copié dans le presse-papiers en secours ;
+- **« Ouvrir Claude avec le prompt pré-rempli »** : ouvre `https://claude.ai/new?q=<prompt>`, une conversation avec le prompt déjà écrit ;
+- **« Copier seulement le prompt »** : simple copie dans le presse-papiers.
 
 > Astuce : crée un **Projet** dans Claude avec ce prompt en instructions personnalisées. Ensuite il suffit d'envoyer la photo, sans recoller le prompt à chaque fois.
 

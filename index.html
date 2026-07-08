@@ -67,15 +67,25 @@
       </div>
 
       <ol class="steps">
-        <li>Prends ton repas en photo</li>
-        <li>Envoie-la à Claude avec le prompt</li>
-        <li>Colle le JSON reçu ci-dessous</li>
+        <li>Envoie ta photo à Claude (boutons ci-dessous)</li>
+        <li>Copie le JSON de sa réponse</li>
+        <li>Colle-le ici et valide</li>
       </ol>
 
-      <button type="button" id="btn-copy-prompt" class="btn-secondary">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-        Copier le prompt pour Claude
+      <button type="button" id="btn-photo" class="btn-secondary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg>
+        Prendre la photo → partager à Claude
       </button>
+      <button type="button" id="btn-share-photo" class="btn-secondary" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg>
+        Envoyer la photo à Claude
+      </button>
+      <button type="button" id="btn-open-claude" class="btn-secondary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M10 14 21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+        Ouvrir Claude avec le prompt pré-rempli
+      </button>
+      <button type="button" id="btn-copy-prompt" class="link-btn">Copier seulement le prompt</button>
+      <input type="file" id="photo-input" accept="image/*" capture="environment" hidden>
 
       <label class="field">
         <span>JSON du repas</span>

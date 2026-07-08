@@ -402,6 +402,17 @@ textarea { resize: vertical; font-family: ui-monospace, "Cascadia Mono", monospa
 .btn-primary { background: var(--primary); color: var(--on-primary); }
 .btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
 .btn-secondary { background: var(--track); color: var(--fg); margin-bottom: 12px; }
+
+.link-btn {
+  display: block;
+  margin: -4px auto 14px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fg-muted);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
 .btn-danger { background: transparent; color: var(--danger); border: 1px solid var(--border); }
 
 .settings-actions { display: flex; flex-direction: column; margin-top: 4px; }

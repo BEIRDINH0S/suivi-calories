@@ -19,10 +19,10 @@ La reconnaissance des aliments est déléguée à **Claude** (claude.ai) via son
 📱 Stockage localStorage  ──►  vues Jour / Semaine / Mois / Année
 ```
 
-1. **Prendre une photo** du repas avec le téléphone.
-2. **L'envoyer à Claude** dans l'app claude.ai, accompagnée du prompt système (voir [PROMPT.md](PROMPT.md)). Le bouton **« Copier le prompt pour Claude »** dans l'app le met directement dans le presse-papiers. Encore mieux : créer un **Projet Claude** avec ce prompt en instructions — il n'y a alors plus qu'à envoyer la photo.
+1. **« Ajouter un repas » → « Prendre la photo → partager à Claude »** : l'app ouvre l'appareil photo (autorisation demandée au premier usage), puis le menu de partage Android — choisir **Claude**. Le prompt système est joint au partage **et** copié dans le presse-papiers en secours (certaines apps ignorent le texte accompagnant une image partagée : dans ce cas, coller le prompt dans la conversation).
+2. Alternative : **« Ouvrir Claude avec le prompt pré-rempli »** ouvre `claude.ai/new?q=…` — une conversation Claude avec le prompt déjà écrit ; il ne reste qu'à joindre la photo. Encore mieux : créer un **Projet Claude** avec le prompt de [PROMPT.md](PROMPT.md) en instructions — il n'y a alors plus qu'à envoyer la photo, sans prompt.
 3. **Copier le JSON** renvoyé par Claude.
-4. **Ouvrir l'app → « Ajouter un repas » → coller le JSON**. Le contenu est validé en direct (nombre d'aliments et total kcal affichés avant l'ajout).
+4. **Retour dans l'app → coller le JSON**. Le contenu est validé en direct (nombre d'aliments et total kcal affichés avant l'ajout).
 5. Consulter les totaux et graphiques par **jour, semaine, mois, année**.
 
 Aucun appel API n'est facturé : on utilise simplement son abonnement Claude existant via l'interface.

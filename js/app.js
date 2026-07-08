@@ -435,6 +435,8 @@ $("#btn-add").addEventListener("click", () => {
   jsonStatus.textContent = "";
   jsonStatus.className = "helper";
   btnSubmit.disabled = true;
+  pendingPhoto = null;
+  $("#btn-share-photo").hidden = true;
   dlgAdd.showModal();
 });
 
@@ -494,6 +496,51 @@ $("#btn-copy-prompt").addEventListener("click", async () => {
   } catch {
     toast("Copie impossible : le prompt est dans PROMPT.md du dépôt");
   }
+});
+
+/* — Envoi de la photo à Claude — */
+const CLAUDE_URL = "https://claude.ai/new?q=" + encodeURIComponent(CLAUDE_PROMPT);
+let pendingPhoto = null;
+
+async function sharePhoto() {
+  if (!pendingPhoto || !navigator.canShare || !navigator.canShare({ files: [pendingPhoto] })) {
+    return false;
+  }
+  try {
+    await navigator.share({ files: [pendingPhoto], text: CLAUDE_PROMPT, title: "Analyse de repas" });
+    toast("Choisis Claude dans le menu — le prompt est copié si besoin");
+    return true;
+  } catch (err) {
+    return err.name === "AbortError"; // partage annulé par l'utilisateur : pas un échec
+  }
+}
+
+$("#btn-photo").addEventListener("click", () => $("#photo-input").click());
+
+$("#photo-input").addEventListener("change", async (ev) => {
+  const file = ev.target.files[0];
+  ev.target.value = "";
+  if (!file) return;
+  pendingPhoto = new File([file], "repas.jpg", { type: file.type || "image/jpeg" });
+  try {
+    await navigator.clipboard.writeText(CLAUDE_PROMPT); // secours si l'app cible ignore le texte partagé
+  } catch { /* presse-papiers indisponible : le partage embarque déjà le texte */ }
+  const shared = await sharePhoto();
+  if (!shared) {
+    $("#btn-share-photo").hidden = false;
+    toast("Photo prête — appuie sur « Envoyer la photo à Claude »");
+  }
+});
+
+$("#btn-share-photo").addEventListener("click", async () => {
+  if (!(await sharePhoto())) {
+    window.open(CLAUDE_URL, "_blank");
+    toast("Partage indisponible : joins la photo dans Claude");
+  }
+});
+
+$("#btn-open-claude").addEventListener("click", () => {
+  window.open(CLAUDE_URL, "_blank");
 });
 
 /* — Réglages — */
