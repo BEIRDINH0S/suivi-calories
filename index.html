@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#059669">
+  <meta name="description" content="Suivi de calories minimaliste, 100 % local, alimenté par des JSON générés par Claude.">
+  <title>Kcal — Suivi calories</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3c-4.5 4-7 7.3-7 11a7 7 0 0 0 14 0c0-3.7-2.5-7-7-11z"/>
+      </svg>
+      <h1>Kcal</h1>
+    </div>
+    <button id="btn-settings" class="icon-btn" aria-label="Réglages">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.09a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h.09a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.09a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+    </button>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Période">
+    <button class="tab" role="tab" data-view="day" aria-selected="true">Jour</button>
+    <button class="tab" role="tab" data-view="week" aria-selected="false">Semaine</button>
+    <button class="tab" role="tab" data-view="month" aria-selected="false">Mois</button>
+    <button class="tab" role="tab" data-view="year" aria-selected="false">Année</button>
+  </nav>
+
+  <div class="period-nav">
+    <button id="btn-prev" class="icon-btn" aria-label="Période précédente">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+    </button>
+    <button id="btn-today" class="period-label" title="Revenir à aujourd'hui"></button>
+    <button id="btn-next" class="icon-btn" aria-label="Période suivante">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+    </button>
+  </div>
+
+  <main id="view" class="view" aria-live="polite"></main>
+
+  <div class="fab-wrap">
+    <button id="btn-add" class="fab">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      Ajouter un repas
+    </button>
+  </div>
+
+  <!-- Modale d'ajout -->
+  <dialog id="dlg-add" class="sheet" aria-labelledby="dlg-add-title">
+    <form method="dialog" class="sheet-inner" id="form-add">
+      <div class="sheet-head">
+        <h2 id="dlg-add-title">Ajouter un repas</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Fermer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <ol class="steps">
+        <li>Prends ton repas en photo</li>
+        <li>Envoie-la à Claude avec le prompt</li>
+        <li>Colle le JSON reçu ci-dessous</li>
+      </ol>
+
+      <button type="button" id="btn-copy-prompt" class="btn-secondary">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+        Copier le prompt pour Claude
+      </button>
+
+      <label class="field">
+        <span>JSON du repas</span>
+        <textarea id="json-input" rows="8" required spellcheck="false" autocomplete="off"
+          placeholder='{"meal":"dejeuner","items":[{"name":"Riz basmati","mass_g":180,"kcal":234,"protein_g":5,"carbs_g":50,"fat_g":1}]}'></textarea>
+      </label>
+      <p id="json-status" class="helper" role="status"></p>
+
+      <div class="field-row">
+        <label class="field">
+          <span>Date (si absente du JSON)</span>
+          <input type="date" id="fallback-date">
+        </label>
+        <label class="field">
+          <span>Repas (si absent du JSON)</span>
+          <select id="fallback-meal">
+            <option value="petit-dejeuner">Petit-déjeuner</option>
+            <option value="dejeuner" selected>Déjeuner</option>
+            <option value="diner">Dîner</option>
+            <option value="collation">Collation</option>
+          </select>
+        </label>
+      </div>
+
+      <button type="submit" id="btn-submit-add" class="btn-primary" disabled>Ajouter</button>
+    </form>
+  </dialog>
+
+  <!-- Modale réglages -->
+  <dialog id="dlg-settings" class="sheet" aria-labelledby="dlg-settings-title">
+    <div class="sheet-inner">
+      <div class="sheet-head">
+        <h2 id="dlg-settings-title">Réglages</h2>
+        <button type="button" class="icon-btn" data-close aria-label="Fermer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <label class="field">
+        <span>Objectif quotidien (kcal)</span>
+        <input type="number" id="goal-input" min="0" step="50" inputmode="numeric">
+      </label>
+
+      <div class="settings-actions">
+        <button type="button" id="btn-export" class="btn-secondary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Exporter mes données
+        </button>
+        <button type="button" id="btn-import" class="btn-secondary">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+          Importer une sauvegarde
+        </button>
+        <input type="file" id="import-file" accept="application/json,.json" hidden>
+        <button type="button" id="btn-clear" class="btn-danger">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+          Tout effacer
+        </button>
+      </div>
+      <p class="helper">Les données sont stockées uniquement dans ce navigateur (localStorage). Pense à exporter régulièrement.</p>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

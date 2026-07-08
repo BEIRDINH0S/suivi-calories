@@ -1,0 +1,25 @@
+{
+  "name": "Kcal — Suivi calories",
+  "short_name": "Kcal",
+  "description": "Suivi de calories minimaliste, 100 % local, alimenté par des JSON générés par Claude.",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f7faf9",
+  "theme_color": "#059669",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
