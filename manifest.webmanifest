@@ -1,6 +1,6 @@
 {
-  "name": "Kcal — Suivi calories",
-  "short_name": "Kcal",
+  "name": "Kalo — Suivi calories",
+  "short_name": "Kalo",
   "description": "Suivi de calories minimaliste, 100 % local, alimenté par des JSON générés par Claude.",
   "lang": "fr",
   "start_url": "./",

@@ -1,4 +1,4 @@
-# Kcal — Suivi de calories minimaliste
+# Kalo — Suivi de calories minimaliste
 
 Application web statique pour suivre ses calories et ses repas au fil des jours, semaines, mois et années. **Zéro serveur, zéro base de données, zéro coût** : tout est stocké localement dans le navigateur du téléphone, et l'hébergement est assuré gratuitement par GitHub Pages.
 

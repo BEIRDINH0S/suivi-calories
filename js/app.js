@@ -570,7 +570,7 @@ $("#btn-export").addEventListener("click", () => {
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = `kcal-sauvegarde-${toISO(new Date())}.json`;
+  a.download = `kalo-sauvegarde-${toISO(new Date())}.json`;
   a.click();
   URL.revokeObjectURL(a.href);
   toast("Sauvegarde téléchargée");

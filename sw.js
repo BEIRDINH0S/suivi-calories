@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE = "kcal-v2";
+const CACHE = "kalo-v3";
 const ASSETS = [
   "./",
   "./index.html",
